@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
+
 import '../../models/grocery.dart';
 
 class NewItem extends StatefulWidget {
@@ -18,12 +18,9 @@ class _NewItemState extends State<NewItem> {
   static const defaultCategory = GroceryCategory.fruit;
 
   // Inputs
-  final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _quantityController = TextEditingController();
   GroceryCategory _selectedCategory = defaultCategory;
-  
-  get uuid => null;
 
   @override
   void initState() {
@@ -44,36 +41,20 @@ class _NewItemState extends State<NewItem> {
   }
 
   void onReset() {
-    _nameController.text = defautName;
-    _quantityController.text = defaultQuantity.toString();
-    setState(() {
-      _selectedCategory = defaultCategory;
-    });
     // Will be implemented later - Reset all fields to the initial values
   }
 
   void onAdd() {
-    if (_formKey.currentState!.validate()) {
-      Grocery newGrocery = Grocery(
-        id: uuid.v4(),
-        name: _nameController.text,
-        quantity: int.parse(_quantityController.text),
-        category: _selectedCategory,
-      );
-      Navigator.pop<Grocery>(context, newGrocery);
-    }
-  }
+    // Will be implemented later - Create and return the new grocery
 
-  // Will be implemented later - Create and return the new grocery
+    Grocery newItems = Grocery(
+      id: "69",
+      name: _nameController.text,
+      quantity: int.parse(_quantityController.text),
+      category: _selectedCategory,
+    );
 
-  String? validateName(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return "Enter a name";
-    }
-    if (value.length < 10 || value.length > 50) {
-      return "Enter a text from 10 to 50 characters";
-    }
-    return null;
+    Navigator.of(context).pop(newItems);
   }
 
   @override
@@ -103,7 +84,17 @@ class _NewItemState extends State<NewItem> {
                 Expanded(
                   child: DropdownButtonFormField<GroceryCategory>(
                     initialValue: _selectedCategory,
-                    items: [],
+                    items: [
+                      ...GroceryCategory.values.map((value) {
+                        return DropdownMenuItem(
+                          value: value,
+                          child: Text(
+                            value.label,
+                            style: TextStyle(color: value.color),
+                          ),
+                        );
+                      }),
+                    ],
                     onChanged: (value) {
                       if (value != null) {
                         setState(() {
