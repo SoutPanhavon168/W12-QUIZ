@@ -21,7 +21,6 @@ class _GroceryListState extends State<GroceryList> {
         },
       ),
     );
-
     setState(() {
       dummyGroceryItems.add(newItems);
     });
